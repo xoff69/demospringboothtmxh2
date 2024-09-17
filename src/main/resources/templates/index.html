@@ -5,23 +5,19 @@
     <title>Items List</title>
     <script src="https://unpkg.com/htmx.org@1.9.12"></script>
     <link rel="stylesheet" href="style.css">
+
   </head>
   <body>
     <h1>My todo</h1>
       <ul>
         <th:block th:each="item : ${itemList}">
-          <li>
-            <input type="checkbox" th:checked="${item.isCompleted}" hx-trigger="click" hx-target="closest li" hx-swap="outerHTML" th:hx-post="|/todos/${item.id}/complete|">
-            <span th:text="${item.description}" th:classappend="${item.isCompleted ? 'complete' : ''}"></span>
-            <button type="button" th:hx-post="|/todos/${item.id}/delete|" hx-swap="outerHTML" hx-target="closest li">&#128465;</button>
-          </li>
-
-        </th:block>
+	  <th:block th:replace="~{'todo.html'}" th:args="${item}"></th:block>
+	</th:block>
       </ul>
       <hr>
-      <form hx-post="/todos" th:object="${newTodo}" hx-target="ul" hx-swap="beforeend">
-        <input type="text" name="description" placeholder="Add a new item..." required>
-	<button type="submit">Add</button>
+      <form hx-post="/todos" th:object="${newTodo}" hx-target="ul" hx-swap="beforeend" hx-on::after-request="document.getElementById('description_form').value = ''">
+        <input type="text" id="description_form" name="description" placeholder="Add a new item..." required  >
+	      <button type="submit">Add</button>
       </form>
   </body>
 </html>
