@@ -1,26 +1,53 @@
-<template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
-</template>
+<script lang="ts">
 
-<script>
-import HelloWorld from './components/HelloWorld.vue'
+import axios from 'axios';
 
 export default {
-  name: 'App',
-  components: {
-    HelloWorld
+  data() {
+    return {
+    
+     items:[],
+    };
   }
-}
+  ,
+
+  methods: {
+      async fechItems() {
+      await axios.get( 'http://localhost:8080/api/items')
+        .then(response => {
+          this.items = response.data;
+        })
+        .catch(error => {
+          console.error('There was an error fetching the categories :', error);
+        });
+    },
+  },
+  created() {
+    this.fechItems();
+
+  },
+};
 </script>
 
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
+<template>
+ My todo
+ <table class="table is-fullwidth"  v-if=" items!=null&&items.length > 0">
+        <thead  class="thead">
+          <tr class="tr">
+            <th class="th">id</th>
+            <th class="th">description</th>
+          </tr>
+        </thead>
+        <tbody class="tbody">
+          <tr v-for="item in items" :key="item.id">
+            
+            <td>{{ item.id }}</td>
+            <td>{{ item.description }}</td>
+          </tr>
+        </tbody>
+      </table>
+</template>
+
+<style scoped>
+
 </style>

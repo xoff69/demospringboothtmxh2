@@ -16,20 +16,12 @@ public class MyController {
   @Autowired
   private TodoItemRepository todoItemRepository;
 
-  public static <E> List<E> makeCollection(Iterable<E> iter) {
-    List<E> list = new ArrayList<E>();
-    for (E item : iter) {
-      list.add(item);
-    }
-    return list;
-  }
 
   public MyController(){ }
   @GetMapping("/")
   public String items(Model model) {
     System.out.println("BEGIN items");
     model.addAttribute("itemList", todoItemRepository.findAll());
-    System.out.println("todoItemRepository "+todoItemRepository);
     return "index";
   }
 
