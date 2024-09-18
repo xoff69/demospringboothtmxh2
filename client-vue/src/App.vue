@@ -5,7 +5,7 @@ import axios from 'axios';
 export default {
   data() {
     return {
-    
+      description:'',
      items:[],
     };
   }
@@ -21,6 +21,21 @@ export default {
           console.error('There was an error fetching the categories :', error);
         });
     },
+    handleSubmit() {
+        // Traiter les données du formulaire ici
+        console.log(`description: ${this.description}`);
+
+        axios.post('http://localhost:8080/api/todoscreate', {
+          params: { description: this.description} ,
+  })
+  .then(function (response) {
+    console.log(response);
+  })
+  .catch(function (error) {
+    console.log(error);
+  });
+
+      }
   },
   created() {
     this.fechItems();
@@ -46,6 +61,18 @@ export default {
           </tr>
         </tbody>
       </table>
+
+      <form @submit.prevent="handleSubmit">
+        <label>
+          Description :
+            <input v-model="description" placeholder="description" required />
+        </label>
+       
+        <span>
+            Description : {{ description }} <br />
+        </span>
+      <button type="submit">Add task</button>
+    </form>
 </template>
 
 <style scoped>

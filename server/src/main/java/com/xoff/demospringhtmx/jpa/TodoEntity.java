@@ -14,7 +14,7 @@ import lombok.Setter;
 @Setter
 public class TodoEntity {
 
-  protected  TodoEntity(){
+  public  TodoEntity(){
 
   }
   @Id
