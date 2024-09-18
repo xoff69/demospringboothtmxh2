@@ -6,14 +6,14 @@ export default {
   data() {
     return {
       description:'',
-     items:[],
+      items:[],
     };
   }
   ,
 
   methods: {
-      async fechItems() {
-      await axios.get( 'http://localhost:8080/api/items')
+     fechItems() {
+       axios.get('http://localhost:8080/api/items')
         .then(response => {
           this.items = response.data;
         })
@@ -22,18 +22,20 @@ export default {
         });
     },
     handleSubmit() {
-        // Traiter les données du formulaire ici
-        console.log(`description: ${this.description}`);
 
-        axios.post('http://localhost:8080/api/todoscreate', {
-          params: { description: this.description} ,
-  })
-  .then(function (response) {
-    console.log(response);
-  })
-  .catch(function (error) {
-    console.log(error);
-  });
+      axios.post('http://localhost:8080/api/todoscreate', {
+        description: this.description
+      },
+      )
+      .then(response => {
+
+          const createdItem = response.data;
+          this.description="";
+          this.items.push(createdItem);
+        })
+        .catch(error => {
+          console.log(error);
+        });
 
       }
   },
@@ -67,10 +69,7 @@ export default {
           Description :
             <input v-model="description" placeholder="description" required />
         </label>
-       
-        <span>
-            Description : {{ description }} <br />
-        </span>
+     
       <button type="submit">Add task</button>
     </form>
 </template>

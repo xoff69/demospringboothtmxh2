@@ -4,6 +4,7 @@ import com.xoff.demospringhtmx.jpa.TodoEntity;
 import com.xoff.demospringhtmx.jpa.TodoItemRepository;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -38,10 +40,10 @@ public class RestController {
   @PostMapping("/todoscreate")
   @CrossOrigin(origins = "http://localhost:3000")
   @ResponseStatus(HttpStatus.OK)
-  public TodoEntity createTodo(@RequestParam(name="description",defaultValue = "test") String description) {
-    System.out.println("newTodo: " + description);
+  public TodoEntity createTodo(@RequestBody TodoDto todoDto) {
+    System.out.println("newTodo: " + todoDto.getDescription());
     TodoEntity todoEntity=new TodoEntity();
-    todoEntity.setDescription(System.currentTimeMillis()+" xx"+ description);
+    todoEntity.setDescription(todoDto.getDescription());
     todoItemRepository.save(todoEntity);
 
     return todoEntity;
